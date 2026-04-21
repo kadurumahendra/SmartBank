@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Success</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: #0b0f19;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Background canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            margin-top: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-card {
+            width: 380px;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 25px rgba(126, 214, 255, 0.3);
+            animation: popUp 0.7s ease;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #7ed6ff;
+            text-shadow: 0 0 10px #7ed6ff;
+        }
+
+        .msg {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.85;
+        }
+
+        .btn {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #21d4fd, #b721ff);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(33,212,253,0.5);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #b721ff;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+    <div class="glass-card">
+        <h2 class="success-title">Transaction Successful ✔️</h2>
+        <p class="msg">Your amount has been transferred successfully.</p>
+
+        <button class="btn" onclick="window.location.href='/checkBalance'">
+            Check Balance
+        </button>
+
+        <button class="btn" onclick="window.location.href='/dashboard'">
+            Return to Dashboard
+        </button>
+    </div>
+</div>
+
+<script>
+    // Neon particle animation background
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+
+        draw() {
+            ctx.fillStyle = "rgba(126, 214, 255, 0.8)";
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#7ed6ff";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+</script>
+
+</body>
+</html>

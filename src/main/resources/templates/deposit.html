@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Money</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        /* Particle canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Glass card */
+        .card {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            transform: scale(1.03);
+            transition: 0.3s ease-in-out;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #00eaff;
+            letter-spacing: 1px;
+        }
+
+        .input-box {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .input-box label {
+            display: block;
+            color: #cce7ff;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .input-box input,
+        .input-box select {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #00eaff;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #00eaff;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #000;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #00b8d4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="card">
+    <h2>Deposit Money</h2>
+
+    <form action="/api/account/deposit" method="post">
+
+        <div class="input-box">
+            <label>Account Number</label>
+            <input type="text" name="number" required>
+        </div>
+
+        <div class="input-box">
+            <label>Account PIN</label>
+            <input type="password" name="acc_pin" required>
+        </div>
+
+        <div class="input-box">
+            <label>Account Type</label>
+            <select name="type" required>
+                <option value="">Select Type</option>
+                <option value="SAVINGS">Savings</option>
+                <option value="CURRENT">Current</option>
+            </select>
+        </div>
+
+        <div class="input-box">
+            <label>Amount</label>
+            <input type="number" name="amount" required>
+        </div>
+
+        <button class="btn">Deposit</button>
+    </form>
+</div>
+
+<script>
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#00eaff';
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+
+</body>
+</html>

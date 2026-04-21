@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Balance</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f2027, #1d2b36, #203a43, #2c5364);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        /* Particle Canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #00eaff;
+            font-weight: 600;
+            text-shadow: 0 0 10px #00eaff;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00eaff; }
+            to { text-shadow: 0 0 22px #00eaff, 0 0 40px #00eaff; }
+        }
+
+        /* Glass Form Card */
+        form {
+            width: 360px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(0, 225, 255, 0.35);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        form:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(0, 225, 255, 0.55);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #bff6ff;
+        }
+
+        input {
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: #eaffff;
+            box-shadow: 0 0 10px rgba(0, 225, 255, 0.25);
+        }
+
+        input:focus {
+            box-shadow: 0 0 18px rgba(0, 225, 255, 0.6);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            background: #00eaff;
+            color: #003b44;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 18px rgba(0, 225, 255, 0.6);
+        }
+
+        .submit-btn:hover {
+            background: #00cce0;
+            box-shadow: 0 0 30px rgba(0, 225, 255, 0.9);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Background Animation -->
+<canvas id="particleCanvas"></canvas>
+
+<h1 class="title">Check Your Balance</h1>
+
+<form action="/api/account/balance" method="post">
+
+    <label>Account Number</label>
+    <input type="text" required name="number">
+
+    <label>Enter PIN</label>
+    <input type="password" required name="acc_pin">
+
+    <button class="submit-btn" type="submit">Check Balance</button>
+
+</form>
+
+<script>
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#00eaff';
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+
+</body>
+</html>

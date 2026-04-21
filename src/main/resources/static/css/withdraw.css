@@ -1,0 +1,9 @@
+@import url('deposit.css');
+
+.btn.withdraw {
+    background: #ff4f6a;
+}
+
+.btn.withdraw:hover {
+    background: #ff6f85;
+}

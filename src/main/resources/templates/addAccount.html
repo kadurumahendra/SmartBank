@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBank - Add Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+          background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          color: #fff;
+          padding: 15px;
+        }
+
+        .money-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          z-index: -1;
+        }
+
+        .money {
+          position: absolute;
+          font-size: 2rem;
+          animation: floatMoney 14s linear infinite;
+          opacity: 0.6;
+        }
+
+        @keyframes floatMoney {
+          0% { transform: translateY(100vh) rotate(0deg); }
+          100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        .money:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .money:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .money:nth-child(3) { left: 55%; animation-delay: 4s; }
+        .money:nth-child(4) { left: 75%; animation-delay: 1.5s; }
+        .money:nth-child(5) { left: 90%; animation-delay: 3.5s; }
+
+        /* FIX: User ID box OUTSIDE and positioned safely */
+        .user-id-box {
+          position: fixed;
+          top: 30px;
+          right: 30px;
+          background: rgba(0, 212, 255, 0.2);
+          padding: 15px 25px;
+          border-radius: 20px;
+          color: #00d4ff;
+          font-weight: 600;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+          text-align: center;
+          z-index: 999;
+        }
+
+        .user-id-box h3 {
+          margin-bottom: 5px;
+          color: #00d4ff;
+        }
+
+        .account-card {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(18px);
+          border-radius: 25px;
+          padding: 35px 30px;
+          text-align: center;
+          width: 100%;
+          max-width: 400px;
+          box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+          animation: fadeIn 1s ease forwards;
+        }
+
+        .account-card h2 {
+          color: #00d4ff;
+          margin-bottom: 25px;
+          font-weight: 600;
+          text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+        }
+
+        .input-box {
+          position: relative;
+          margin: 22px 0;
+        }
+
+        .input-box input,
+        .input-box select {
+          width: 100%;
+          padding: 12px;
+          background: transparent;
+          border: none;
+          border-bottom: 2px solid #bbb;
+          color: #fff;
+          outline: none;
+          font-size: 1rem;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus {
+          border-bottom-color: #00d4ff;
+        }
+
+        .input-box label {
+          position: absolute;
+          top: 50%;
+          left: 10px;
+          color: #aaa;
+          transform: translateY(-50%);
+          pointer-events: none;
+          transition: 0.3s;
+        }
+
+        .input-box input:focus + label,
+        .input-box input:valid + label,
+        .input-box select:focus + label {
+          top: -5px;
+          font-size: 0.8rem;
+          color: #00d4ff;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 12px;
+          background: #00d4ff;
+          border: none;
+          border-radius: 25px;
+          color: #000;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        .btn:hover {
+          background: #00a6c4;
+          box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+          transform: scale(1.03);
+        }
+
+        .back-link {
+          margin-top: 15px;
+          color: #cce7ff;
+        }
+
+        .back-link a {
+          color: #00d4ff;
+          text-decoration: none;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- FIXED: User ID box moved OUTSIDE the card -->
+<div class="user-id-box">
+    <h3>Your User ID</h3>
+    <span th:text="${userId}"></span>
+</div>
+
+<div class="money-bg">
+    <div class="money">💸</div>
+    <div class="money">💰</div>
+    <div class="money">💳</div>
+    <div class="money">💵</div>
+    <div class="money">💲</div>
+</div>
+
+<div class="account-card">
+
+    <h2>Add New Account</h2>
+
+    <form action="/log/add" method="post">
+
+        <div class="input-box">
+            <input type="text" name="account_num" required>
+            <label>Account Number</label>
+        </div>
+
+        <div class="input-box">
+            <input type="password" name="acc_pin" maxlength="6" required>
+            <label>Account PIN</label>
+        </div>
+
+        <div class="input-box">
+            <select name="account_type" required>
+                <option value="" disabled selected hidden></option>
+                <option value="Savings">Savings</option>
+                <option value="Current">Current</option>
+                <option value="Salary">Salary</option>
+            </select>
+            <label>Account Type</label>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="branch" required>
+            <label>Branch</label>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="irfc" required>
+            <label>IFSC Code</label>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="aadhar" maxlength="12" required>
+            <label>Aadhar Number</label>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="userId" required>
+            <label>User Id</label>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+        <p class="back-link">Go back to <a href="/dashboard">Dashboard</a></p>
+
+    </form>
+</div>
+
+</body>
+</html>

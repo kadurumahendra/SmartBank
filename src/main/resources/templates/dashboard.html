@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartBank | Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 💸 Floating Money Animation */
+        .money-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .money {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.5;
+            animation: floatMoney 12s linear infinite;
+        }
+
+        @keyframes floatMoney {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        .money:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .money:nth-child(2) { left: 25%; animation-delay: 3s; }
+        .money:nth-child(3) { left: 45%; animation-delay: 6s; }
+        .money:nth-child(4) { left: 65%; animation-delay: 1.5s; }
+        .money:nth-child(5) { left: 80%; animation-delay: 4.5s; }
+
+        /* 🔹 Navbar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* 🔹 Dashboard Layout */
+        .dashboard-wrapper {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 56px); /* subtract navbar height */
+        }
+
+        .left-panel {
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.05);
+            border-right: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(8px);
+            animation: fadeInLeft 1.2s ease;
+        }
+
+        .left-panel img {
+            width: 65%;
+            max-width: 320px;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .right-panel {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            text-align: center;
+            animation: fadeInRight 1.2s ease;
+        }
+
+        .welcome {
+            font-size: 2.3rem;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            color: #00d4ff;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25);
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 45px rgba(0, 212, 255, 0.4);
+        }
+
+        .service-btn {
+            margin: 20px;
+            padding: 15px 35px;
+            border-radius: 35px;
+            border: none;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: white;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .service-btn:hover {
+            transform: scale(1.07);
+            background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: -8px;
+        }
+
+        /* ✨ Animations */
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+
+<body>
+<!-- 💸 Background Money Animation -->
+<div class="money-bg">
+    <div class="money">💸</div>
+    <div class="money">💰</div>
+    <div class="money">💵</div>
+    <div class="money">💸</div>
+    <div class="money">💳</div>
+</div>
+
+<!-- 🔹 Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold text-info" href="/">SmartBank</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 🔹 Dashboard Main Layout -->
+<div class="dashboard-wrapper">
+    <div class="left-panel">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Icon">
+    </div>
+
+    <div class="right-panel">
+        <div class="welcome">Welcome, <span th:text="${username}">User</span> 👋</div>
+
+        <div class="dashboard-card text-center">
+            <h3 class="mb-4 text-info">Your SmartBank Services</h3>
+
+            <div class="d-flex flex-wrap justify-content-center">
+                <div class="text-center mx-3">
+                    <button class="service-btn" onclick="location.href='/balance'">💰 Check Balance</button>
+                    <div class="service-desc">View your current balance instantly.</div>
+                </div>
+
+                <div class="text-center mx-3">
+                    <button class="service-btn" onclick="location.href='/deposit'">⬆️ Deposit</button>
+                    <div class="service-desc">Add funds securely to your account.</div>
+                </div>
+
+                <div class="text-center mx-3">
+                    <button class="service-btn" onclick="location.href='/withdraw'">⬇️ Withdraw</button>
+                    <div class="service-desc">Withdraw cash safely anytime.</div>
+                </div>
+
+                <div class="text-center mx-3">
+                    <button class="service-btn" onclick="location.href='/transaction'">📜 Send Money</button>
+                    <div class="service-desc">Send the money to another account.</div>
+                </div>
+
+                <div class="text-center mx-3">
+                    <button class="service-btn" onclick="location.href='/addAccount'">➕ Add Account</button>
+                    <div class="service-desc">Open a new SmartBank account easily.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

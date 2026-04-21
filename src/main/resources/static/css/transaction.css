@@ -1,0 +1,50 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Poppins; }
+body { background: #010b15; overflow: hidden; }
+
+#particleCanvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; z-index: -1;
+}
+
+.container {
+    padding: 40px;
+}
+
+.title {
+    color: #00eaff;
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 25px;
+}
+
+.table-card {
+    background: rgba(0,255,255,0.08);
+    border: 1px solid rgba(0,255,255,0.3);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    color: #00eaff;
+    padding-bottom: 15px;
+    font-size: 18px;
+}
+
+tbody tr {
+    background: rgba(0,255,255,0.05);
+    border-bottom: 1px solid rgba(0,255,255,0.1);
+}
+
+td {
+    padding: 12px;
+    color: #d9faff;
+}
+
+.success { color: #00ff9c; }
+.failed { color: #ff4f6a; }
